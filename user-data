@@ -1,0 +1,16 @@
+#cloud-config
+
+manage-resolv-conf: true
+
+resolv_conf:
+  nameservers: ['8.8.8.8', '8.8.4.4']
+  domain: sciabarra.net
+
+password: trumpet
+ssh_pwauth: True
+chpasswd: { expire: False }
+ssh_authorized_keys:
+  - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCsyzQHm7cPHee7Ckv8rTz20RauExuqldBjCaYLqMqFMQW9ybtkTvMjBTMHn8//u3ZG+rds98ansjWO/8xFaa1Rb1phKuSQMXkA6pG+GlpCf69JShPr0kPS7wZISGJ7pgm9fkByqmvzyIgKEi9Im8hhzXSAZd/KpXdhGvI8egimyIhRdKofJQdOcsHMCJadL88mg9/HpkSgm/dCGY/LA2ec+pWuAgQRat9Jlz+9JlWV82OHFTdagqEU5qQ8pcKxOVZ3ihSZz+63gjPpYQPtU+GmWuUt/ngRrP+P7PAcO1AU38bUuy7BQGJMARH77tfvbdrgpmCPuJaAmpHGevp83Yx/ msciab@minisites.local
+runcmd:
+ - ifdown enp0s3
+ - ifup enp0s3
