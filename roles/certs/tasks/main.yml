@@ -32,3 +32,16 @@
   args:
     chdir: /opt/easy-rsa-master/easyrsa3
     creates: /opt/easy-rsa-master/easyrsa3/pki/private/server.key
+
+
+- name: copy files
+  become: yes
+  copy:
+    remote_src: true
+    src:
+    dest:
+
+- file: become=yes path=/etc/kubernetes/certs state=directory mode=0755
+- copy: become=yes owner=kube group=kube remote_src=true src=/opt/easy-rsa-master/easyrsa/pki/ca.crt dest=/etc/kubernetes/certs/ca.crt
+- copy: become=yes owner=kube group=kube remote_src=true src=/opt/easy-rsa-master/easyrsa/pki/issued/server.crt dest=/etc/kubernetes/certs/server.crt
+- copy: become=yes owner=kube group=kube remote_src=true src=/opt/easy-rsa-master/easyrsa/pki/private/server.key dest=/etc/kubernetes/certs/server.key
