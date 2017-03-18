@@ -7,5 +7,7 @@
     - dns
 
 - hosts: masters
+  become: yes
   roles:
     - registry
+    - etcd
