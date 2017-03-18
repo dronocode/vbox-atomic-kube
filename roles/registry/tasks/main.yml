@@ -15,3 +15,13 @@
        -e REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY=/var/lib/registry \
        -e REGISTRY_PROXY_REMOTEURL=https://registry-1.docker.io \
        --name=local-registry registry:2 && touch /var/lib/local-registry/.done
+
+- name: local-registry service
+  become: yes
+  template: src=local-registry.service dest=/etc/systemd/system/local-registry.service mode=644
+  notify:
+    - reload systemd
+
+- name: enabling local-registry
+  become: yes
+  service: name=local-registry state=started enabled=yes
