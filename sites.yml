@@ -1,6 +1,7 @@
 - hosts: all
   roles:
     - common
+    - flannel
 
 - hosts: vbox
   roles:
@@ -13,3 +14,8 @@
     - etcd
     - certs
     - kube-master
+
+- hosts: nodes
+  become: yes
+  roles:
+    - kubelet

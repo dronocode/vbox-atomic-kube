@@ -1,6 +1,3 @@
-- name: configure kubernetes
-  template: src=config dest=/etc/kubernetes/config mode=0644
-
 - name: configure apiserver
   template: src=apiserver dest=/etc/kubernetes/apiserver mode=0644
 
@@ -8,34 +5,34 @@
   template: src=controller-manager dest=/etc/kubernetes/controller-manager mode=0644
 
 - name: kube-apiserver service
-  become: yes
   template: src=kube-apiserver.service dest=/etc/systemd/system/kube-apiserver.service mode=644
   notify:
     - reload systemd
 
 - name: kube-controller service
-  become: yes
   template: src=kube-controller-manager.service dest=/etc/systemd/system/kube-controller-manager.service mode=644
   notify:
     - reload systemd
 
 - name: kube-scheduler service
-  become: yes
   template: src=kube-scheduler.service dest=/etc/systemd/system/kube-scheduler.service mode=644
   notify:
     - reload systemd
 
-- name: enabling kube-apiserver
-  become: yes
-  command: echo TODO
-  #service: name=kube-apiserver state=started enabled=yes
+- name: configure kubernetes
+  template: src=config dest=/etc/kubernetes/config mode=0644
+  notify:
+    - restart kubelet
+    - restart kube-master
 
-- name: enabling kube-controller
-  become: yes
-  command: echo TODO
-  #service: name=kube-apiserver state=started enabled=yes
+- name: configure kubelets
+  template: src=kubelet dest=/etc/kubernetes/kubelet mode=0644
+  notify:
+    - restart kubelet
 
-- name: enabling kube-scheduler
-  become: yes
-  command: echo TODO
-  #service: name=kube-apiserver state=started enabled=yes
+
+- service: name=kube-apiserver state=started enabled=yes
+- service: name=kube-controller-manager state=started enabled=yes
+- service: name=kube-scheduler state=started enabled=yes
+- service: name=kubelet state=started enabled=yes
+- service: name=kube-proxy state=started enabled=yes
