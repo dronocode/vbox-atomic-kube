@@ -1,9 +1,9 @@
 - hosts: all
   roles:
     - common
-    - flannel
 
 - hosts: vbox
+  become: yes
   roles:
     - dns
 
@@ -12,6 +12,7 @@
   roles:
     - registry
     - etcd
+    - flannel
     - certs
     - kube-master
 
@@ -19,3 +20,4 @@
   become: yes
   roles:
     - kubelet
+    - flannel
